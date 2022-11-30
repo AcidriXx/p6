@@ -68,14 +68,15 @@ exports.deleteSauces =  (req, res, next) => {
 
 exports.likeSauce = (req, res, next) => {
     sauces.findOne({_id: req.params.id})
+    
     .then((sauces) => {
-    console.log(req.body.like);
-
         switch(req.body.like) {
             
             case 1 : 
 
-                if(!sauces.usersLiked.includes(req.body.userId) && req.body.likes === 1) {
+                if(!sauces.usersLiked.includes(req.body.userId)) 
+                {
+                    console.log("je suis dans le case 1");
                     sauces.updateOne({_id: req.params.id}, {$inc: {likes: 1}, $push: {usersLiked: req.body.userId}})
                     .then(() => res.status(201).json({ message: "like +1"}))
                     .catch(error => res.status(400).json({ error }));
@@ -84,7 +85,9 @@ exports.likeSauce = (req, res, next) => {
 
             case -1 : 
 
-                if(!sauces.usersDisliked.includes(req.body.userId) && req.body.likes === -1) {
+                if(!sauces.usersDisliked.includes(req.body.userId)) 
+                {
+                    console.log("je suis dans le case -1");
                     sauces.updateOne({_id: req.params.id}, {$inc: {dislikes: 1}, $push: {usersDisliked: req.body.userId}})
                     .then(() => res.status(201).json({ message: "dislikes = +1"}))
                     .catch(error => res.status(400).json({ error }));
@@ -93,13 +96,16 @@ exports.likeSauce = (req, res, next) => {
 
             case 0 : 
 
-                if (sauces.usersLiked.includes(req.body.userId)) {
+                if (sauces.usersLiked.includes(req.body.userId) && req.body.likes === 1) 
+                {
+                    console.log("je suis dans la case 0");
                     sauces.updateOne({_id: req.params.id}, {$inc: {likes: -1}, $pull: {usersLiked: req.body.userId}})
                     .then(() => res.status(201).json({ message: "like = 0"}))
                     .catch(error => res.status(400).json({ error }));
                 } 
         
-                if(sauces.usersDisliked.includes(req.body.userId)) {
+                else if (sauces.usersDisliked.includes(req.body.userId) && req.body.likes === -1) 
+                {
                     sauces.updateOne({_id: req.params.id}, {$inc: {dislikes: -1}, $push: {usersDisliked: req.body.userId}})
                     .then(() => res.status(201).json({ message: "dislikes = 0"}))
                     .catch(error => res.status(400).json({ error }));
