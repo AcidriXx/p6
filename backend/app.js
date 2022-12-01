@@ -4,12 +4,12 @@ const path = require('path');
 const userRoutes = require('./routes/user');
 const saucesRoutes = require('./routes/sauces');
 
-mongoose.connect('mongodb+srv://Max:kYlvOhkariVtWjWl@cluster0.gi5lyre.mongodb.net/?retryWrites=true&w=majority',
+mongoose.connect('mongodb+srv://max:pPiumZ8heS8euIYt@cluster0.crdy7dr.mongodb.net/test',
     { useNewUrlParser: true,
     useUnifiedTopology: true })
     .then(() => console.log('connexion a mongoDB reussi !'))
     .catch(() => console.log('connexion a mongoDB echouee !'));
-
+   
 
 const app = express();
 
